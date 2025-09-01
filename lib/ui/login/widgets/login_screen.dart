@@ -32,14 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(20),
-              right: Radius.circular(20),
+        child: Form(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-          ),
-          child: Form(
             child: Column(
               children: [
                 Align(

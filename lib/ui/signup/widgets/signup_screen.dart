@@ -23,14 +23,11 @@ class _SignupScreenState extends State<SignupScreen> {
       appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(20),
-              right: Radius.circular(20),
+        child: Form(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-          ),
-          child: Form(
             child: Column(
               children: [
                 Align(
@@ -42,6 +39,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
 
                 Padding(padding: EdgeInsets.all(20)),
+
+                TextFormField(
+                  decoration: InputDecoration(labelText: "Nome completo"),
+                  style: theme.textTheme.bodySmall,
+                ),
+
+                Padding(padding: EdgeInsets.all(10)),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: "Email"),
