@@ -1,31 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/ui/login/view_model/login_view_model.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.viewModel});
-
-  final LoginViewModel viewModel;
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   widget.viewModel.shareBooking.addListener(_listener);
-  // }
-
-  // @override
-  // void dispose() {
-  //   widget.viewModel.shareBooking.removeListener(_listener);
-  //   super.dispose();
-  // }
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LoginViewModel>();
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -44,16 +27,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text("Login", style: theme.textTheme.headlineLarge),
                 ),
 
-                Padding(padding: EdgeInsets.all(20)),
+                const SizedBox(height: 20),
 
                 TextFormField(
+                  controller: vm.emailController,
                   decoration: InputDecoration(labelText: "Email"),
                   style: theme.textTheme.bodySmall,
                 ),
 
-                Padding(padding: EdgeInsets.all(10)),
+                const SizedBox(height: 10),
 
                 TextFormField(
+                  controller: vm.passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Senha",
@@ -63,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: theme.textTheme.bodySmall,
                 ),
 
-                Padding(padding: EdgeInsets.all(10)),
+                const SizedBox(height: 10),
 
                 Align(
                   alignment: Alignment.centerRight,
@@ -73,26 +58,38 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                Padding(padding: EdgeInsets.all(20)),
+                const SizedBox(height: 20),
 
                 SizedBox(
                   width: double.infinity,
+                  height: 50,
                   child: ElevatedButton(
-                    onPressed: () => print("fez login"),
-                    child: Text(
-                      "Entrar",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    onPressed: vm.isLoading ? null : () => vm.login(),
+                    child: vm.isLoading
+                        ? CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Entrar',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                   ),
                 ),
 
-                Padding(padding: EdgeInsets.all(20)),
+                const SizedBox(height: 12),
+                if (vm.successMsg != null)
+                  Text(
+                    vm.successMsg!,
+                    style: const TextStyle(color: Colors.green),
+                  ),
+                if (vm.errorMsg != null)
+                  Text(vm.errorMsg!, style: const TextStyle(color: Colors.red)),
+
+                const SizedBox(height: 20),
 
                 Row(
                   children: [
                     Expanded(child: Divider(thickness: 1, color: Colors.grey)),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
                         "Ou entre com",
                         style: theme.textTheme.bodySmall,
@@ -102,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
 
-                Padding(padding: EdgeInsets.all(15)),
+                const SizedBox(height: 15),
 
                 OutlinedButton.icon(
                   onPressed: () => print("Login com Google"),
@@ -111,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 24,
                     width: 24,
                   ),
-                  label: Text(
+                  label: const Text(
                     "Entrar com Google",
                     style: TextStyle(color: Colors.black),
                   ),
@@ -121,18 +118,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 16,
+                    ),
                   ),
                 ),
 
-                Padding(padding: EdgeInsets.all(20)),
+                const SizedBox(height: 20),
 
                 Text(
                   "Ainda não possui uma conta?",
                   style: theme.textTheme.bodySmall,
                 ),
 
-                Padding(padding: EdgeInsets.all(10)),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: 50,
                   width: double.infinity,
