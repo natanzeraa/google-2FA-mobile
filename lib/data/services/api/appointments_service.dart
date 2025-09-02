@@ -1,36 +1,14 @@
-typedef AuthHeaderProvider = String? Function();
+import 'dart:convert';
 
-class Assets {
-  static const appointments = 'assets/appointmens.json';
-}
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:mobile_app/domain/models/appointment/appointment.dart';
 
 class AppointmentsService {
-
-  ApiClient({String? host, int? port, HttpClient Function()? clientFactory})
-    : _host = host ?? 'localhost',
-      _port = port ?? 8080,
-      _clientFactory = clientFactory ?? HttpClient.new;
-
-  final String _host;
-  final int _port;
-  final HttpClient Function() _clientFactory;
-
-  AuthHeaderProvider? _authHeaderProvider;
-
-  set authHeaderProvider(AuthHeaderProvider authHeaderProvider) {
-    _authHeaderProvider = authHeaderProvider;
-  }
-
-  Future<void> _authHeader(HttpHeaders headers) async {
-    final header = _authHeaderProvider?.call();
-    if (header != null) {
-      headers.add(HttpHeaders.authorizationHeader, header);
-    }
-  }
-
   Future<List<Appointment>> getAppointments() async {
-    final json = await _loadStringAsset(Assets.appointments);
-    return json.map<Appointment>(Appointment.fromJson).toList();
-  }
+    final jsonString = await rootBundle.loadString('assets/appointments.json');
 
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+
+    return jsonList.map((json) => Appointment.fromJson(json)).toList();
+  }
 }
