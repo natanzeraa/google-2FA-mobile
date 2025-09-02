@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/data/services/models/auth_request/auth_request.dart';
@@ -22,10 +23,7 @@ class AuthService {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/login'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': requestData.email,
-          'password': requestData.password,
-        }),
+        body: jsonEncode(requestData.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -64,10 +62,7 @@ class AuthService {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/signup'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': requestData.email,
-          'password': requestData.password,
-        }),
+        body: jsonEncode(requestData.toJson()),
       );
 
       if (response.statusCode == 200) {
