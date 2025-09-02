@@ -43,3 +43,72 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins-versions
+.idea/
+.vscode/
+*.iml
+*.log
+*.lock
+*.metadata
+*.snapshot
+build/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+android/.gradle/
+android/app/build/
+*.apk
+*.aar
+*.keystore
+pubspec.lock
+*.flutter-plugins
+*.flutter-plugins-dependencies
+*.flutter-plugins-versions
+
+# MacOS
+.macos/
+macos/Flutter/Flutter.framework
+macos/Flutter/GeneratedPluginRegistrant.*
+
+# Windows
+windows/flutter/generated_plugin_registrant.*
+windows/flutter/generated_plugins.cmake
+windows/Flutter/
+
+# Linux
+linux/flutter/generated_plugin_registrant.*
+linux/flutter/generated_plugins.cmake
+linux/Flutter/
+
+# Web
+web/.dart_tool/
+web/build/
+web/.firebase/
+
+# Firebase / Google Services
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Other temp files
+*.DS_Store
+*.class
+*.jar
+*.war
+*.iml
+*.ipr
+*.iws
+.idea/
+*.log
+*.swp
+*.lock
+*.tmp
