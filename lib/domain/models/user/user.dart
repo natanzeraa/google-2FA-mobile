@@ -9,7 +9,6 @@ abstract class User with _$User {
     required String id,
     required String name,
     required String email,
-    required String password,
     required bool twoFaEnabled,
   }) = _User;
 
