@@ -1,28 +1,29 @@
+import 'package:go_router/go_router.dart';
+import 'package:mobile_app/data/repositories/auth/auth_repository.dart';
+import 'package:mobile_app/data/services/api/auth_service.dart';
+import 'package:mobile_app/ui/home/widgets/home_screen.dart';
 import 'package:mobile_app/ui/login/view_model/login_view_model.dart';
 import 'package:mobile_app/ui/login/widgets/login_screen.dart';
 import 'package:mobile_app/ui/signup/view_model/signup_view_model.dart';
 import 'package:mobile_app/ui/signup/widgets/signup_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../data/repositories/auth/auth_repository.dart';
 import 'routes.dart';
 
-GoRouter router(AuthRepository authRepository) => GoRouter(
-  initialLocation: Routes.login,
-  debugLogDiagnostics: true,
-  redirect: _redirect,
-  refreshListenable: authRepository,
+final GoRouter router = GoRouter(
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: Routes.login,
       builder: (context, state) {
-        return LoginScreen(
-          viewModel: LoginViewModel(authRepository: context.read()),
+        return ChangeNotifierProvider(
+          create: (_) =>
+              LoginViewModel(repository: AuthRepository(AuthService())),
+          child: const LoginScreen(),
         );
       },
     ),
+
     GoRoute(
       path: Routes.signup,
       builder: (context, state) {
@@ -31,38 +32,17 @@ GoRouter router(AuthRepository authRepository) => GoRouter(
         );
       },
     ),
-    // GoRoute(
-    //   path: Routes.home,
-    //   builder: (context, state) {
-    //     final viewModel = HomeViewModel(customerRepository: context.read());
-    //     return HomeScreen(viewModel: viewModel);
-    //   },
-    // ),
-    // GoRoute(
-    //   path: Routes.customers,
-    //   builder: (context, state) {
-    //     final viewModel = CustomerViewModel(customerRepository: context.read());
-    //     return CustomerScreen(viewModel: viewModel);
-    //   },
-    // ),
+
+    GoRoute(path: Routes.home, builder: (context, state) => const HomeScreen()),
   ],
+  redirect: (context, state) {
+    final token = AuthRepository(AuthService()).getTokenSync();
+    final loggingIn = state.path == Routes.login;
+
+    if (token != null && token.isNotEmpty) {
+      return loggingIn ? Routes.home : null;
+    } else {
+      return loggingIn ? null : Routes.login;
+    }
+  },
 );
-
-// From https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/redirection.dart
-Future<String?> _redirect(BuildContext context, GoRouterState state) async {
-  // if the user is not logged in, they need to login
-  final loggedIn = await context.read<AuthRepository>().isAuthenticated;
-  final loggingIn = state.matchedLocation == Routes.login;
-  if (!loggedIn) {
-    return Routes.login;
-  }
-
-  // if the user is logged in but still on the login page, send them to
-  // the home page
-  if (loggingIn) {
-    return Routes.login;
-  }
-
-  // no need to redirect at all
-  return null;
-}
