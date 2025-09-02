@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthRequest {
 
- String get email; String get password; String? get token;
+ String? get name; String get email; String get password; String? get token;
 /// Create a copy of AuthRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AuthRequestCopyWith<AuthRequest> get copyWith => _$AuthRequestCopyWithImpl<Auth
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthRequest&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.token, token) || other.token == token));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.token, token) || other.token == token));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,email,password,token);
+int get hashCode => Object.hash(runtimeType,name,email,password,token);
 
 @override
 String toString() {
-  return 'AuthRequest(email: $email, password: $password, token: $token)';
+  return 'AuthRequest(name: $name, email: $email, password: $password, token: $token)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AuthRequestCopyWith<$Res>  {
   factory $AuthRequestCopyWith(AuthRequest value, $Res Function(AuthRequest) _then) = _$AuthRequestCopyWithImpl;
 @useResult
 $Res call({
- String email, String password, String? token
+ String? name, String email, String password, String? token
 });
 
 
@@ -65,9 +65,10 @@ class _$AuthRequestCopyWithImpl<$Res>
 
 /// Create a copy of AuthRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? password = null,Object? token = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? email = null,Object? password = null,Object? token = freezed,}) {
   return _then(_self.copyWith(
-email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  String? token)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String email,  String password,  String? token)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthRequest() when $default != null:
-return $default(_that.email,_that.password,_that.token);case _:
+return $default(_that.name,_that.email,_that.password,_that.token);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.email,_that.password,_that.token);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  String? token)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String email,  String password,  String? token)  $default,) {final _that = this;
 switch (_that) {
 case _AuthRequest():
-return $default(_that.email,_that.password,_that.token);case _:
+return $default(_that.name,_that.email,_that.password,_that.token);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.email,_that.password,_that.token);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  String? token)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String email,  String password,  String? token)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthRequest() when $default != null:
-return $default(_that.email,_that.password,_that.token);case _:
+return $default(_that.name,_that.email,_that.password,_that.token);case _:
   return null;
 
 }
@@ -211,9 +212,10 @@ return $default(_that.email,_that.password,_that.token);case _:
 @JsonSerializable()
 
 class _AuthRequest implements AuthRequest {
-  const _AuthRequest({required this.email, required this.password, this.token});
+  const _AuthRequest({this.name, required this.email, required this.password, this.token});
   factory _AuthRequest.fromJson(Map<String, dynamic> json) => _$AuthRequestFromJson(json);
 
+@override final  String? name;
 @override final  String email;
 @override final  String password;
 @override final  String? token;
@@ -231,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthRequest&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.token, token) || other.token == token));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthRequest&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.token, token) || other.token == token));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,email,password,token);
+int get hashCode => Object.hash(runtimeType,name,email,password,token);
 
 @override
 String toString() {
-  return 'AuthRequest(email: $email, password: $password, token: $token)';
+  return 'AuthRequest(name: $name, email: $email, password: $password, token: $token)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$AuthRequestCopyWith<$Res> implements $AuthRequestCopyWith
   factory _$AuthRequestCopyWith(_AuthRequest value, $Res Function(_AuthRequest) _then) = __$AuthRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String email, String password, String? token
+ String? name, String email, String password, String? token
 });
 
 
@@ -268,9 +270,10 @@ class __$AuthRequestCopyWithImpl<$Res>
 
 /// Create a copy of AuthRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,Object? token = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? email = null,Object? password = null,Object? token = freezed,}) {
   return _then(_AuthRequest(
-email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String?,

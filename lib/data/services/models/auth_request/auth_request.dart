@@ -6,6 +6,7 @@ part 'auth_request.g.dart';
 @freezed
 abstract class AuthRequest with _$AuthRequest {
   const factory AuthRequest({
+    String? name,
     required String email,
     required String password,
     String? token,
@@ -13,4 +14,5 @@ abstract class AuthRequest with _$AuthRequest {
 
   factory AuthRequest.fromJson(Map<String, Object?> json) =>
       _$AuthRequestFromJson(json);
+  
 }
