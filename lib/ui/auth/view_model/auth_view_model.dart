@@ -1,9 +1,14 @@
+import 'package:flutter/foundation.dart';
+import 'package:mobile_app/data/repositories/auth/auth_repository.dart';
+import 'package:mobile_app/utils/result.dart';
+
 class AuthViewModel extends ChangeNotifier {
   final AuthRepository repository;
   AuthViewModel({required this.repository});
 
   bool isLoggedIn = false;
   bool isLoading = false;
+  bool acceptedTerms = false;
   bool success = false;
   String? successMsg;
   String? errorMsg;
@@ -12,23 +17,20 @@ class AuthViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final result = await repository.login(
+    final Result result = await repository.login(
       email: email.trim(),
       password: password.trim(),
     );
 
-    result.when(
-      ok: (value) {
-        success = true;
-        successMsg = value.message;
-        isLoggedIn = true;
-      },
-      error: (err) {
-        success = false;
-        errorMsg = err.toString();
-        isLoggedIn = false;
-      },
-    );
+    if (result is Ok) {
+      success = true;
+      successMsg = result.value.message;
+      isLoggedIn = true;
+    } else if (result is Error) {
+      success = false;
+      errorMsg = result.error.toString();
+      isLoggedIn = false;
+    }
 
     isLoading = false;
     notifyListeners();
@@ -38,40 +40,37 @@ class AuthViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final result = await repository.signup(
+    final Result result = await repository.signup(
       name: name.trim(),
       email: email.trim(),
       password: password.trim(),
     );
 
-    result.when(
-      ok: (value) {
-        success = true;
-        successMsg = value.message;
-        isLoggedIn = true;
-      },
-      error: (err) {
-        success = false;
-        errorMsg = err.toString();
-        isLoggedIn = false;
-      },
-    );
+    if (result is Ok) {
+      success = true;
+      successMsg = result.value.message;
+      isLoggedIn = true;
+    } else if (result is Error) {
+      success = false;
+      errorMsg = result.error.toString();
+      isLoggedIn = false;
+    }
 
     isLoading = false;
     notifyListeners();
   }
 
   Future<void> logout() async {
-    final result = await repository.logout();
+    final Result result = await repository.logout();
 
-    result.when(
-      ok: (_) {
-        isLoggedIn = false;
-      },
-      error: (err) {
-        errorMsg = err.toString();
-      },
-    );
+    if (result is Ok) {
+      isLoggedIn = false;
+      success = true;
+      successMsg = "Logout efetuado";
+    } else if (result is Error) {
+      success = false;
+      errorMsg = result.error.toString();
+    }
 
     notifyListeners();
   }
