@@ -11,10 +11,11 @@ class AuthService {
   final String baseUrl;
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
+  AuthService({String? baseUrl})
+      : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? 'http://localhost:3000';
+
   String? _cachedAccessToken;
   String? _cachedRefreshToken;
-
-  AuthService({this.baseUrl = 'http://localhost:3000/embcontab'});
 
   Future<Result<AuthResponse>> login(AuthRequest requestData) async {
     try {
@@ -81,6 +82,27 @@ class AuthService {
       return Result.error(e);
     }
   }
+
+  Future<Result<void>> logout() async {
+  try {
+    await _secureStorage.delete(key: 'accessToken');
+    await _secureStorage.delete(key: 'refreshToken');
+
+    // await _secureStorage.deleteAll();
+
+    _cachedAccessToken = null;
+    _cachedRefreshToken = null;
+
+    final shared = await SharedPreferences.getInstance();
+    await shared.remove('user');
+    await shared.remove('twoFaEnabled');
+
+    return Result.ok(null);
+  } on Exception catch (e) {
+    return Result.error(e);
+  }
+}
+
 
   String? getTokenSync() => _cachedAccessToken;
 
