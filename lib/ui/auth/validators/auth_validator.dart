@@ -17,8 +17,8 @@ class AuthValidator {
     return null;
   }
 
-  String? validatePasswordConfirmation(String password, String confirmation) {
-    if (confirmation.isEmpty) return "Confirme sua senha";
+   String? validatePasswordConfirmation(String? confirmation, String? password) {
+    if (confirmation == null || confirmation.isEmpty) return "Confirme sua senha";
     if (confirmation != password) return "As senhas não coincidem";
     return null;
   }
