@@ -9,7 +9,7 @@ class AuthRepository {
 
   Future<bool> get isAuthenticated => Future.value(false);
 
-  Future<Result<void>> login({
+  Future<Result<AuthResponse>> login({
     required String email,
     required String password,
   }) async {
@@ -22,9 +22,18 @@ class AuthRepository {
     }
   }
 
-  Future<Result<AuthResponse>> signup(AuthRequest request) async {
-    final result = await service.signup(request);
-    return result;
+  Future<Result<AuthResponse>> signup({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final request = AuthRequest(name: name, email: email, password: password);
+      final result = await service.signup(request);
+      return result;
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
   }
 
   Future<Result<void>> logout() async {
