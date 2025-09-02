@@ -1,10 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobile_app/domain/models/appointment/appointment.dart';
 
-import 'appointment.dart';
-
-part 'appointment_response.freezed.dart';
-part 'appointment_response.g.dart';
+part 'appointments_response.freezed.dart';
+part 'appointments_response.g.dart';
 
 /// Represents the response from the API when fetching appointments.
 ///
@@ -29,7 +27,7 @@ part 'appointment_response.g.dart';
 /// }
 /// ```
 @freezed
-class AppointmentResponse with _$AppointmentResponse {
+abstract class AppointmentResponse with _$AppointmentResponse {
   /// Creates a new [AppointmentResponse] instance.
   const factory AppointmentResponse({
     /// Indicates if the API call was successful.

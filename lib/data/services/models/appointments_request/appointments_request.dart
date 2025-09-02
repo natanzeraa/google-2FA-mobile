@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'appointment_request.freezed.dart';
-part 'appointment_request.g.dart';
+part 'appointments_request.freezed.dart';
+part 'appointments_request.g.dart';
 
 /// Represents the request to fetch appointments from the API.
 ///
@@ -18,7 +18,7 @@ part 'appointment_request.g.dart';
 /// }
 /// ```
 @freezed
-class AppointmentRequest with _$AppointmentRequest {
+abstract class AppointmentRequest with _$AppointmentRequest {
   /// Creates a new [AppointmentRequest] instance.
   const factory AppointmentRequest({
     /// Filter by client name.
