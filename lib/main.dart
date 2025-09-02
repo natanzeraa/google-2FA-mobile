@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mobile_app/data/repositories/auth/auth_repository.dart';
+import 'package:mobile_app/data/services/api/auth_service.dart';
 import 'package:mobile_app/routing/router.dart';
+import 'package:mobile_app/ui/auth/view_model/auth_view_model.dart';
 import 'package:mobile_app/ui/core/themes/theme.dart';
 import 'package:mobile_app/ui/core/ui/scroll_behavior.dart';
-import 'package:mobile_app/ui/auth/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -12,7 +15,7 @@ Future<void> main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => AuthViewModel(),
+      create: (_) => AuthViewModel(repository: AuthRepository(AuthService())),
       child: const MyApp(),
     )
   );
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      routerConfig: router,
+      routerConfig: router(AuthViewModel(repository: AuthRepository(AuthService()))),
     );
   }
 }
