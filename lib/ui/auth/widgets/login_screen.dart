@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/ui/auth/validators/auth_validator.dart';
 import 'package:mobile_app/ui/auth/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package: mobile_app/ui/auth/validators/auth_validator.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<AuthViewModel>();
     final _theme = Theme.of(context);
-    final _formKey = GlobalFormKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
     final _validator = AuthValidator();
 
     final TextEditingController _emailController = TextEditingController();
@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
 
                 TextFormField(
                   controller: _emailController,
-                  validator: _validator.validateEmail,
+                  validator: (value) => _validator.validateEmail(value ?? ''),
                   decoration: InputDecoration(labelText: "Email"),
                   style: _theme.textTheme.bodySmall,
                 ),
@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
 
                 TextFormField(
                   controller: _passwordController,
-                  validator: _validator.validatePassword,
+                  validator: (value) => _validator.validatePassword(value ?? ''),
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Senha",
@@ -73,7 +73,7 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: vm.isLoading ? null : () => vm.login(),
+                    onPressed: vm.isLoading ? null : () => vm.login(_emailController.text.trim(), _passwordController.text.trim()),
                     child: vm.isLoading
                         ? CircularProgressIndicator(color: Colors.white)
                         : const Text(

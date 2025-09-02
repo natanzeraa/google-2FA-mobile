@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/ui/auth/validators/auth_validator.dart';
 import 'package:mobile_app/ui/auth/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -10,7 +12,7 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<AuthViewModel>();
     final _theme = Theme.of(context);
-    final _formKey = GlobalFormKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
     final _validator = AuthValidator();
         
     final TextEditingController _nameController = TextEditingController();
@@ -42,7 +44,7 @@ class SignupScreen extends StatelessWidget {
 
                 TextFormField(
                   controller: _nameController,
-                  validator: _validator.validateName,
+                  validator: (value) => _validator.validateName(value ?? ""),
                   decoration: InputDecoration(labelText: "Nome completo"),
                   style: _theme.textTheme.bodySmall,
                 ),
@@ -51,7 +53,7 @@ class SignupScreen extends StatelessWidget {
 
                 TextFormField(
                   controller: _emailController,
-                  validator: _validator.validateEmail,
+                  validator: (value) => _validator.validateEmail(value ?? ""),
                   decoration: InputDecoration(labelText: "Email"),
                   style: _theme.textTheme.bodySmall,
                 ),
@@ -60,7 +62,7 @@ class SignupScreen extends StatelessWidget {
 
                 TextFormField(
                   controller: _passwordController,
-                  validator: _validator.validatePassword,
+                  validator: (value) => _validator.validatePassword(value ?? ""),
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Senha",
@@ -74,7 +76,7 @@ class SignupScreen extends StatelessWidget {
 
                 TextFormField(
                   controller: _passwordConfirmationController,
-                  validator: _validator.validatePasswordConfirmation,
+                  validator: (value) => _validator.validatePasswordConfirmation(value, _passwordController.text),
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Confirmação de senha",
@@ -87,9 +89,8 @@ class SignupScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: CheckboxListTile(
-                    value: vm._acceptedTerms,
-                    onChanged:  () => vm._acceptedTerms = value ?? false;
-                    },
+                    value: vm.acceptedTerms,
+                    onChanged:  (value) => vm.acceptedTerms = value ?? false,
                     title: Text(
                       "Aceita os termos e condições?",
                       style: _theme.textTheme.bodySmall,
@@ -106,7 +107,7 @@ class SignupScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: vm.isLoading
                       ? null
-                      : () => vm.signup() ,
+                      : () => vm.signup(_nameController.text.trim(), _passwordController.text.trim(), _passwordConfirmationController.text.trim()) ,
                     child: vm.isLoading
                         ? CircularProgressIndicator(color: Colors.white)
                         : Text( 
