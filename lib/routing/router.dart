@@ -10,39 +10,28 @@ import 'package:provider/provider.dart';
 
 import 'routes.dart';
 
-final GoRouter router = GoRouter(
+final auth = context.watch<AuthViewModel>();
+
+final router = GoRouter(
   initialLocation: '/login',
-  routes: [
-    GoRoute(
-      path: Routes.login,
-      builder: (context, state) {
-        return ChangeNotifierProvider(
-          create: (_) =>
-              LoginViewModel(repository: AuthRepository(AuthService())),
-          child: const LoginScreen(),
-        );
-      },
-    ),
+  refreshListenable: auth, 
 
-    GoRoute(
-      path: Routes.signup,
-      builder: (context, state) {
-        return SignupScreen(
-          viewModel: SignupViewModel(authRepository: context.read()),
-        );
-      },
-    ),
+  redirect: (context, state) {
+    final loggedIn = auth.isLoggedIn;
+    final loggingIn = state.matchedLocation == '/login';
 
+    if (!loggedIn && !loggingIn) {
+      return '/login';  
+    }
+    if (loggedIn && loggingIn) {
+      return '/home'; 
+    }
+    return null; 
+  },
+
+   routes: [
+    GoRoute(path: Routes.login, builder: (context, state) => const LoginScreen()),
+    GoRoute(path: Routes.signup, builder: (context, state) => const SignupScreen()),
     GoRoute(path: Routes.home, builder: (context, state) => const HomeScreen()),
   ],
-  redirect: (context, state) {
-    final token = AuthRepository(AuthService()).getTokenSync();
-    final loggingIn = state.path == Routes.login;
-
-    if (token != null && token.isNotEmpty) {
-      return loggingIn ? Routes.home : null;
-    } else {
-      return loggingIn ? null : Routes.login;
-    }
-  },
 );
