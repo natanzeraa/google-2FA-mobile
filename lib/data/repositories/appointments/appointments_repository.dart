@@ -1,13 +1,12 @@
-import 'package:mobile_app/data/repositories/appointments/appointments_repository.dart';
-import 'package:mobile_app/data/services/local/local_service.dart';
+import 'package:mobile_app/data/services/api/appointments_service.dart';
 import 'package:mobile_app/domain/models/appointment/appointment.dart';
 import 'package:mobile_app/utils/result.dart';
 
-class AppointmentsRepository extends AppointmentsRepository {
-  AppointmentsRepository({required AppointmentsService service})
-    : _service = service;
+class AppointmentsRepository {
+   final AppointmentsService _service;
 
-  final service _service;
+  AppointmentsRepository({required AppointmentsService service})
+      : _service = service;
 
   Future<Result<List<Appointment>>> getAppointments() async {
     try {
